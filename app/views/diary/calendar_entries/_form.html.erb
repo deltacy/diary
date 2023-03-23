@@ -1,0 +1,57 @@
+<%= form_with(model: calendar_entry) do |form| %>
+  <% if calendar_entry.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(calendar_entry.errors.count, "error") %> prohibited this calendar_entry from being saved:</h2>
+
+      <ul>
+        <% calendar_entry.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :owner_id, style: "display: block" %>
+    <%= form.text_field :owner_id %>
+  </div>
+
+  <div>
+    <%= form.label :title, style: "display: block" %>
+    <%= form.text_field :title %>
+  </div>
+
+  <div>
+    <%= form.label :description, style: "display: block" %>
+    <%= form.text_area :description %>
+  </div>
+
+  <div>
+    <%= form.label :schedulable_id, style: "display: block" %>
+    <%= form.text_field :schedulable_id %>
+  </div>
+
+  <div>
+    <%= form.label :start_time, style: "display: block" %>
+    <%= form.datetime_field :start_time %>
+  </div>
+
+  <div>
+    <%= form.label :end_time, style: "display: block" %>
+    <%= form.datetime_field :end_time %>
+  </div>
+
+  <div>
+    <%= form.label :cancellation_reason, style: "display: block" %>
+    <%= form.text_field :cancellation_reason %>
+  </div>
+
+  <div>
+    <%= form.label :cancelled, style: "display: block" %>
+    <%= form.check_box :cancelled %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
