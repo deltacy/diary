@@ -4,7 +4,8 @@ module Diary
 
     # GET /calendar_entries
     def index
-      @calendar_entries = CalendarEntry.all
+      @calendar_entries = CalendarEntry.all.order(start_time: :asc)
+      @grouped_calendar_entries = @calendar_entries.group_by { |c| c.start_time.to_datetime.to_date }
     end
 
     # GET /calendar_entries/1
@@ -54,7 +55,7 @@ module Diary
 
       # Only allow a list of trusted parameters through.
       def calendar_entry_params
-        params.require(:calendar_entry).permit(:owner_id, :owner_type, :title, :description, :schedulable_id, :schedulable_type, :start_time, :end_time, :cancellation_reason, :cancelled)
+        params.require(:calendar_entry).permit(:owner_sgid, :owner_type, :title, :description, :schedulable_sgid, :start_time, :end_time, :cancellation_reason, :cancelled)
       end
   end
 end

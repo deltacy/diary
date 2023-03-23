@@ -1,14 +1,40 @@
 <p style="color: green"><%= notice %></p>
 
-<h1>Calendar entries</h1>
+<h1>Calendar Entries</h1>
 
-<div id="calendar_entries">
-  <% @calendar_entries.each do |calendar_entry| %>
-    <%= render calendar_entry %>
-    <p>
-      <%= link_to "Show this calendar entry", calendar_entry %>
-    </p>
-  <% end %>
+<div vlcass="row">
+	<div class="col">
+		<table class="table table-bordered" id="calendar-entries">
+				<% @grouped_calendar_entries.each do |name, entries| %>
+					<thead>
+						<tr>
+							<th colspan='2'>
+								<%= name %>
+							</th>
+						</tr>
+					</thead>
+					<colgroup>
+						<col span="1" style="width: 30%;">
+						<col span="1" style="width: 70%;">
+					</colgroup>
+					<tbody>
+						<% entries.each do |entry| %>
+							<tr>
+								<td>
+									<span class="text-center">
+										<%= entry.start_time.strftime('%I:%M %p') %> to <%= entry.end_time.strftime('%I:%M %p') %>
+									</span>
+								</td>
+								<td>
+									<p>
+									<%= entry.schedulable.title %>
+									<span>(<%= entry.owner.name %>)</span>
+									</p>
+								</td>
+							</tr>
+					</tbody>
+				<% end %>
+			<% end %>
+		</table>
+	</div>
 </div>
-
-<%= link_to "New calendar entry", new_calendar_entry_path %>

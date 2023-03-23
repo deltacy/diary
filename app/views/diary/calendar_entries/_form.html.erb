@@ -12,8 +12,8 @@
   <% end %>
 
   <div>
-    <%= form.label :owner_id, style: "display: block" %>
-    <%= form.text_field :owner_id %>
+    <%= form.label :owner_sgid, 'Owner', style: "display: block" %>
+    <%= form.collection_select :owner_sgid, User.all, :to_signed_global_id, :name, prompt: true, selected: calendar_entry.owner %>
   </div>
 
   <div>
@@ -27,8 +27,8 @@
   </div>
 
   <div>
-    <%= form.label :schedulable_id, style: "display: block" %>
-    <%= form.text_field :schedulable_id %>
+    <%= form.label :schedulable_sgid, 'Schedulable', style: "display: block" %>
+    <%= form.collection_select :schedulable_sgid, Appointment.all, :to_signed_global_id, :id, prompt: true %>
   </div>
 
   <div>
