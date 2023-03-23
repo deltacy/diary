@@ -1,6 +1,7 @@
 require "diary/version"
 require "diary/engine"
+require "diary/diary_owner"
 
 module Diary
-  # Your code goes here...
+
 end
