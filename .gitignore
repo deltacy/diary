@@ -1,0 +1,8 @@
+/.bundle/
+/doc/
+/log/*.log
+/pkg/
+/tmp/
+/spec/planner/log/*.log
+/spec/planner/storage/
+/spec/planner/tmp/
