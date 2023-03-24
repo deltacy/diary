@@ -4,6 +4,8 @@ module CalendarEntryOwner
   included do
     has_many :calendar_entries, class_name: 'Diary::CalendarEntry', as: :owner
 
-    scope :is_booked_at, ->(date) { left_joins(:calendar_entries).where(':date BETWEEN start_time AND end_time', date: date) }
+    scope :is_booked_at, lambda { |date|
+                           left_joins(:calendar_entries).where(':date BETWEEN start_time AND end_time', date:)
+                         }
   end
 end

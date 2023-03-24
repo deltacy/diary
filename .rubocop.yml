@@ -1,0 +1,30 @@
+require: rubocop-rspec
+
+AllCops:
+  NewCops: enable
+  Exclude:
+    - 'bin/*'
+    - 'db/schema.rb'
+    - 'db/migrate/*'
+    - 'spec/planner/**/*'
+
+Style/Documentation:
+  Enabled: false
+
+Metrics/AbcSize:
+  Exclude:
+    - db/migrate/*
+
+Metrics/MethodLength:
+  Exclude:
+    - db/migrate/*
+
+Style/StringLiterals:
+  Enabled: true
+  EnforcedStyle: single_quotes
+
+Gemspec/RequireMFA:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
