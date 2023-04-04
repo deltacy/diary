@@ -25,4 +25,5 @@ Gem::Specification.new do |spec|
   end
 
   spec.add_dependency 'rails', '>= 7.0.4.3'
+  spec.add_dependency 'icalendar', '>= 2.8.0'
 end
