@@ -1,5 +1,7 @@
 module Diary
   class ApplicationController < ::ApplicationController
-    layout 'applcation'
+    include Diary::CalendarSubscription
+
+    layout 'application'
   end
 end

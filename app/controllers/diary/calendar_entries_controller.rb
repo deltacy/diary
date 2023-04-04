@@ -1,11 +1,12 @@
 module Diary
   class CalendarEntriesController < ApplicationController
+    subscribe_to_calendar
+
     before_action :set_calendar_entry, only: %i[show edit update destroy]
 
     # GET /calendar_entries
     def index
-      @calendar_entries = CalendarEntry.all.order(start_time: :asc)
-      @grouped_calendar_entries = @calendar_entries.group_by { |c| c.start_time.to_datetime.to_date }
+      @grouped_calendar_entries = calendar_entries.group_by { |c| c.start_time.to_datetime.to_date }
     end
 
     # GET /calendar_entries/1
@@ -57,5 +58,10 @@ module Diary
       params.require(:calendar_entry).permit(:owner_sgid, :owner_type, :title, :description, :schedulable_sgid,
                                              :start_time, :end_time, :cancellation_reason, :cancelled)
     end
+
+    def calendar_entries
+      @calendar_entries ||= CalendarEntry.includes(:owner, :schedulable).all.order(start_time: :asc)
+    end
+
   end
 end
