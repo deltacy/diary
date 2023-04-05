@@ -60,8 +60,17 @@ module Diary
     end
 
     def calendar_entries
-      @calendar_entries ||= CalendarEntry.includes(:owner, :schedulable).all.order(start_time: :asc)
+      @calendar_entries ||= CalendarEntry.includes(:owner, :schedulable).order(start_time: :asc)
+      @calendar_entries = @calendar_entries.where(start_time: start_time..end_time) if start_time && end_time
+      @calendar_entries
     end
 
+    def start_time
+      @start_time = params[:start]
+    end
+
+    def end_time
+      @end_time = params[:end]
+    end
   end
 end
