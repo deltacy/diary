@@ -8,9 +8,8 @@ module Diary
       g.factory_bot dir: 'spec/factories'
     end
 
-    initializer "diary.assets.precompile" do |app|
-      app.config.assets.precompile += %w( diary/application.css )
+    initializer 'diary.assets.precompile' do |app|
+      app.config.assets.precompile += %w[diary/application.css]
     end
-
   end
 end

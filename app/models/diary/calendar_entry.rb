@@ -20,10 +20,10 @@ module Diary
       self.schedulable = GlobalID::Locator.locate_signed(sgid)
     end
 
-    def ical(calendar: Icalendar::Calendar.new, calendar_name: Diary.app_name )
+    def ical(calendar: Icalendar::Calendar.new, calendar_name: Diary.app_name)
       calendar.x_wr_calname = calendar_name
       calendar.event do |e|
-        e.uid         = "#{schedulable.class}##{schedulable.id.to_s}"
+        e.uid         = "#{schedulable.class}##{schedulable.id}"
         e.dtstart     = start_time
         e.dtend       = end_time
         e.attendee    = ["mailto:#{owner.email}"]
@@ -34,11 +34,11 @@ module Diary
         e.status      = 'CONFIRMED' # 'CANCELLED'
         e.location    = schedulable.address if schedulable.respond_to?(:address)
 
-        e.ip_class    = "PRIVATE"
+        e.ip_class    = 'PRIVATE'
 
         e.alarm do |a|
           a.summary = "#{title} is in 1 hour"
-          a.trigger = "-PT1H" # 1 hour
+          a.trigger = '-PT1H' # 1 hour
         end
       end
 

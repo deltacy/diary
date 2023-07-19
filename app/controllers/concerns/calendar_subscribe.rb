@@ -15,8 +15,8 @@ module CalendarSubscribe
 
   private
 
-  def icalendar_with(calendar: Icalendar::Calendar.new, entries:)
-    entries.each { |entry| entry.ical(calendar: calendar, calendar_name: Diary.app_name) }
+  def icalendar_with(entries:, calendar: Icalendar::Calendar.new)
+    entries.each { |entry| entry.ical(calendar:, calendar_name: Diary.app_name) }
     calendar
   end
 end
