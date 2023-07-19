@@ -7,5 +7,10 @@ module Diary
       g.fixture_replacement :factory_bot
       g.factory_bot dir: 'spec/factories'
     end
+
+    initializer "diary.assets.precompile" do |app|
+      app.config.assets.precompile += %w( diary/application.css )
+    end
+
   end
 end
