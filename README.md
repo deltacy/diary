@@ -2,7 +2,14 @@
 Short description and motivation.
 
 ## Usage
-How to use my plugin.
+
+```bash
+ rails diary:install:migrations
+ ```
+
+## Add initializer
+
+`config/initializers/diary.rb`
 
 ## Installation
 Add this line to your application's Gemfile:
