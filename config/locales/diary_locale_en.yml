@@ -1,0 +1,5 @@
+en:
+  errors:
+    messages:
+      after_or_equal_to: "%{attribute} must be after %{compared_attribute}"
+
