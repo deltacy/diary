@@ -27,4 +27,18 @@ RSpec.describe User, type: :model do
     expect(User.is_booked_at(200.minutes.from_now)).to eq([morven])
     expect(User.is_booked_at(230.minutes.from_now)).to be_empty
   end
+
+  it 'can generate a calendar token for a user' do
+    morven.generate_calendar_token
+
+    expect(morven.calendar_token).to_not be nil
+  end
+
+  it 'does not allow two users to have the same token' do
+    morven.calendar_token = "12345"
+    morven.save
+
+    jane.calendar_token = "12345"
+    expect { jane.save }.to raise_error
+  end
 end
