@@ -6,10 +6,16 @@ class DateValidator < ActiveModel::EachValidator
   end
 
   def date_validations(record, attribute, value)
-    record.errors.add(attribute, :after_or_equal_to, attribute: attribute, compared_attribute: options[:after_or_equal_to]) if options[:after_or_equal_to] && !after_or_equal_to?(record, value, options[:after_or_equal_to])
+    if options[:after_or_equal_to] && !after_or_equal_to?(
+      record, value, options[:after_or_equal_to]
+    )
+      record.errors.add(attribute, :after_or_equal_to, attribute:,
+                                                       compared_attribute: options[:after_or_equal_to])
+    end
   end
 
   private
+
   def blank?(value)
     return false if value.is_a?(Date) || value.is_a?(DateTime) || value.is_a?(ActiveSupport::TimeWithZone)
 
@@ -21,10 +27,10 @@ class DateValidator < ActiveModel::EachValidator
 
   def after_or_equal_to?(record, value, field_to_compare)
     value_to_compare = record.send(field_to_compare)
-    return true unless value_to_compare.is_a?(Date) || value_to_compare.is_a?(DateTime) || value_to_compare.is_a?(ActiveSupport::TimeWithZone)
+    unless value_to_compare.is_a?(Date) || value_to_compare.is_a?(DateTime) || value_to_compare.is_a?(ActiveSupport::TimeWithZone)
+      return true
+    end
 
     value_to_compare < value
   end
 end
-
-

@@ -17,7 +17,7 @@ module CalendarEntryOwner
       break random_token unless self.class.where(calendar_token: random_token).exists?
     end
 
-    self.calendar_token_create_at = Time.zone.now
+    self.calendar_token_created_at = Time.zone.now
     save!
   end
 end
