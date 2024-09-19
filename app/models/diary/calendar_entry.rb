@@ -4,7 +4,7 @@ module Diary
     belongs_to :owner, polymorphic: true
     belongs_to :schedulable, polymorphic: true
 
-    validates :start_time, presence: true
+    validates :start_time, :owner_id,  presence: true
     validates :end_time, presence: true, date: { after_or_equal_to: :start_time }
 
     def owner_sgid
