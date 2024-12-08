@@ -5,6 +5,13 @@ RSpec.describe Appointment, type: :model do
   let(:appointment) { create(:appointment) }
   let!(:calendar_entry) { Diary::CalendarEntry.create(owner: jane, schedulable: appointment, start_time: 1.hour.from_now, end_time: 2.hours.from_now) }
 
+
+  it 'a calendar entry is invalid if it starts after it ends' do
+    event = Diary::CalendarEntry.new(owner: jane, schedulable: appointment, start_time: 4.hour.from_now, end_time: 2.hours.from_now)
+
+    expect(event.save).to be(false)
+  end
+
   it 'a calendar entry contains the organiser' do
     expect(calendar_entry.ical).to include "ORGANIZER;CN=Frontida Calendar:mailto:no-reply@some-email.com"
   end
