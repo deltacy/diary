@@ -4,6 +4,9 @@ module Diary
     belongs_to :owner, polymorphic: true
     belongs_to :schedulable, polymorphic: true
 
+    has_many :calendar_invites
+    has_many :invitees, through: :calendar_invites, source_type: :invitee, polyrmophic: true, as: :invitees
+
     validates :start_time, :owner_id,  presence: true
     validates :end_time, presence: true, date: { after_or_equal_to: :start_time }
 

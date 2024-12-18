@@ -1,6 +1,7 @@
 require 'diary/version'
 require 'diary/engine'
 require 'diary/diary_owner'
+require 'diary/diary_invitee'
 require 'diary/schedulable'
 require 'diary/calendar_subscription'
 

@@ -6,6 +6,7 @@ RSpec.describe User, type: :model do
   let(:morven) { create(:user, name: 'Morven') }
 
   it 'retrieves all calendar entries for a user' do
+    binding.pry
     Diary::CalendarEntry.create(owner: jane, schedulable: create(:appointment), start_time: 1.hour.from_now, end_time: 2.hours.from_now)
     Diary::CalendarEntry.create(owner: jane, schedulable: create(:appointment), start_time: 4.hours.from_now, end_time: 5.hours.from_now)
     Diary::CalendarEntry.create(owner: create(:user), schedulable: create(:appointment), start_time: 2.hours.from_now, end_time: 5.hours.from_now)
@@ -26,6 +27,16 @@ RSpec.describe User, type: :model do
     expect(User.is_booked_at(90.minutes.from_now)).to eq([jane, john, morven])
     expect(User.is_booked_at(200.minutes.from_now)).to eq([morven])
     expect(User.is_booked_at(230.minutes.from_now)).to be_empty
+  end
+
+
+  it 'returns all invitees of a calendar entry' do
+    entry = Diary::CalendarEntry.create(owner: jane, schedulable: create(:appointment), start_time: 1.hour.from_now, end_time: 2.hours.from_now)
+    Diary::CalendarInvite.create(invitee: john, diary_calendar_entry: entry)
+    Diary::CalendarInvite.create(invitee: morven, diary_calendar_entry: entry)
+
+    puts entry.invitees.inspect
+    expect(entry.invitees.length).to eq(2)
   end
 
   it 'can generate a calendar token for a user' do
