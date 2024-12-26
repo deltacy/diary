@@ -7,6 +7,8 @@ module Diary
     validates :start_time, :owner_id,  presence: true
     validates :end_time, presence: true, date: { after_or_equal_to: :start_time }
 
+    scope :on_date, ->(date) { where(start_time: date.all_day) }
+
     def owner_sgid
       owner&.to_signed_global_id
     end
