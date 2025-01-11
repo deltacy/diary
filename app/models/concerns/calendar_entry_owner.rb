@@ -21,8 +21,8 @@ module CalendarEntryOwner
     save!
   end
 
-  def all_availability(date, day_start=DateTime.today.beginning_of_day, day_end=DateTime.today.end_of_day)
-    bookings = calendar_entries.on_date(date)
+  def all_availability(date, day_start=DateTime.today.beginning_of_day, day_end=DateTime.today.end_of_day, calendar_entry=nil)
+    bookings = calendar_entries.on_date(date) - [calendar_entry]
 
     x = day_start
     slots = []
