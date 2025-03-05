@@ -1,4 +1,4 @@
-class CreateDiaryCalendarEntries < ActiveRecord::Migration[7.0]
+class CreateDiaryCalendarEntries < ActiveRecord::Migration[ActiveRecord::Migration[ActiveRecord::Migration.current_version]
   def change
     create_table :diary_calendar_entries do |t|
       t.references :owner, polymorphic: true, null: false

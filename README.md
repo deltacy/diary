@@ -4,7 +4,8 @@ Short description and motivation.
 ## Usage
 
 ```bash
- rails diary:install:migrations
+rails generate diary:install
+rails db:migrate
  ```
 
 ## Add initializer
