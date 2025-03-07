@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require "rails/generators"
-require "rails/generators/active_record"
+require 'rails/generators'
+require 'rails/generators/active_record'
 require 'rails/generators/base'
 
 module Diary
@@ -18,7 +18,9 @@ module Diary
       end
 
       def create_migrations
-        migration_template "create_diary_calendar_entries.rb", "db/migrate/create_diary_calendar_entries.rb"
+        migration_template 'create_diary_calendar_entries.rb', 'db/migrate/create_diary_calendar_entries.rb'
+        migration_template 'create_diary_calendar_invites.rb', 'db/migrate/create_diary_calendar_invites.rb'
+        migration_template 'create_diary_calendar_invitees.rb', 'db/migrate/create_diary_calendar_invitees.rb'
       end
 
       def self.next_migration_number(dirname)

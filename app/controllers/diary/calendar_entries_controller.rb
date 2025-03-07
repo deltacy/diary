@@ -25,6 +25,7 @@ module Diary
       @calendar_entry = CalendarEntry.new(calendar_entry_params)
 
       if @calendar_entry.save
+        process_invites(@calendar_entry, params[:calendar_entry][:invites])
         redirect_to @calendar_entry, notice: 'Calendar entry was successfully created.'
       else
         render :new, status: :unprocessable_entity
@@ -55,8 +56,10 @@ module Diary
 
     # Only allow a list of trusted parameters through.
     def calendar_entry_params
-      params.require(:calendar_entry).permit(:owner_sgid, :owner_type, :title, :description, :schedulable_sgid,
-                                             :start_time, :end_time, :cancellation_reason, :cancelled)
+      params.require(:diary_calendar_entry).permit(
+        :title, :description,
+        calendar_invites_attributes: [:id, :title, :description, { invitees: [] }]
+      )
     end
 
     def calendar_entries
@@ -71,6 +74,25 @@ module Diary
 
     def end_time
       @end_time = params[:end]
+    end
+
+    def process_invites(calendar_entry, invites)
+      invites.each do |invite_data|
+        invite = calendar_entry.calendar_invites.create(title: invite_data[:title], description: invite_data[:description])
+        process_invitees(invite, invite_data[:invitees])
+      end
+    end
+
+    def process_invitees(invite, invitees)
+      invitees.each do |invitee_data|
+        if invitee_data.match?(URI::MailTo::EMAIL_REGEXP)
+          invite.calendar_invitees.create(email: invitee_data)
+        else
+          model, id = invitee_data.split('_')
+          klass = model.safe_constantize
+          invite.calendar_invitees.create(invitee: klass.find(id)) if klass&.exists?(id)
+        end
+      end
     end
   end
 end

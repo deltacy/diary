@@ -65,6 +65,7 @@ RSpec.configure do |config|
   #
   require 'factory_bot_rails'
 
+  FactoryBot.definition_file_paths << File.join(ENGINE_ROOT, 'spec', 'factories')
   FactoryBot.definition_file_paths << File.join(ENGINE_ROOT, 'spec', 'planner', 'spec', 'factories')
   FactoryBot.factories.clear
   FactoryBot.find_definitions

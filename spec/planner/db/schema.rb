@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_10_053917) do
+ActiveRecord::Schema[7.2].define(version: 2025_03_06_152001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -37,6 +37,26 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_10_053917) do
     t.index ["schedulable_type", "schedulable_id"], name: "index_diary_calendar_entries_on_schedulable"
   end
 
+  create_table "diary_calendar_invitees", force: :cascade do |t|
+    t.bigint "diary_calendar_invite_id", null: false
+    t.string "invitee_type"
+    t.bigint "invitee_id"
+    t.string "email"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["diary_calendar_invite_id"], name: "index_diary_calendar_invitees_on_diary_calendar_invite_id"
+    t.index ["invitee_type", "invitee_id"], name: "index_diary_calendar_invitees_on_invitee"
+  end
+
+  create_table "diary_calendar_invites", force: :cascade do |t|
+    t.bigint "diary_calendar_entry_id", null: false
+    t.string "title"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["diary_calendar_entry_id"], name: "index_diary_calendar_invites_on_diary_calendar_entry_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -46,4 +66,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_10_053917) do
     t.datetime "calendar_token_created_at", precision: nil
     t.index ["calendar_token"], name: "index_users_on_calendar_token", unique: true
   end
+
+  add_foreign_key "diary_calendar_invitees", "diary_calendar_invites"
+  add_foreign_key "diary_calendar_invites", "diary_calendar_entries"
 end
