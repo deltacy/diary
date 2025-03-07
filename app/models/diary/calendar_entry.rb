@@ -1,13 +1,17 @@
 require 'icalendar'
 module Diary
   class CalendarEntry < ApplicationRecord
+    has_many :calendar_invites, foreign_key: 'diary_calendar_entry_id', dependent: :destroy, inverse_of: :calendar_entry
+
     belongs_to :owner, polymorphic: true
     belongs_to :schedulable, polymorphic: true
 
-    validates :start_time, :owner_id,  presence: true
+    validates :start_time, :owner_id, presence: true
     validates :end_time, presence: true, date: { after_or_equal_to: :start_time }
 
     scope :on_date, ->(date) { where(start_time: date.all_day) }
+
+    accepts_nested_attributes_for :calendar_invites
 
     def owner_sgid
       owner&.to_signed_global_id

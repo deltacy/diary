@@ -17,5 +17,9 @@ gem 'rubocop'
 gem 'rubocop-rspec'
 gem 'sprockets-rails'
 
+group :developmenet do
+  gem 'letter_opener'
+end
+
 # Start debugger with binding.b [https://github.com/ruby/debug]
 # gem "debug", ">= 1.0.0"
