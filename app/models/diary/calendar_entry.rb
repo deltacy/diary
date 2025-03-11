@@ -35,23 +35,45 @@ module Diary
         e.uid         = "#{schedulable.class}##{schedulable.id}"
         e.dtstart     = start_time
         e.dtend       = end_time
-        e.attendee    = ["mailto:#{owner.email}"]
-        e.summary     = title
+        e.summary     = title.presence || 'Meeting'
         e.description = description
-        e.organizer   = "mailto:#{Diary.calendar_sender}"
-        e.organizer   = Icalendar::Values::CalAddress.new("mailto:#{Diary.calendar_sender}", cn: Diary.app_name)
         e.status      = 'CONFIRMED' # 'CANCELLED'
         e.location    = schedulable.address if schedulable.respond_to?(:address)
+        e.organizer   = Icalendar::Values::CalAddress.new("mailto:#{Diary.calendar_sender}",
+                                                          cn: "#{owner.full_name} via #{Diary.app_name}", role: 'CHAIR')
+        e.attendee    = [calendar_attendee(owner, 'CHAIR')]
+        invitable_attendees.map(&:invitee).each { |attendee| e.append_attendee calendar_attendee(attendee) }
 
-        e.ip_class    = 'PRIVATE'
-
-        e.alarm do |a|
-          a.summary = "#{title} is in 1 hour"
-          a.trigger = '-PT1H' # 1 hour
-        end
+        e.ip_class = 'PRIVATE'
+        add_calendar_alert(e, "#{title.presence || 'Meeting'}", '-PT1H')
       end
 
       calendar.to_ical
+    end
+
+    private
+
+    def invitable_attendees(attendees = [])
+      calendar_invites.each do |calendar_invite|
+        attendees += calendar_invite.calendar_invitees.select do |calendar_invitee|
+          if Diary.email_invitee_classes.include?(calendar_invitee.invitee.class.name) && !calendar_invitee.invitee.eql?(owner)
+            true
+          end
+        end
+      end
+
+      attendees
+    end
+
+    def add_calendar_alert(event, title, trigger)
+      event.alarm do |alert|
+        alert.summary = "#{title} is in 1 hour"
+        alert.trigger = trigger
+      end
+    end
+
+    def calendar_attendee(attendee, role = 'REQ-PARTICIPANT')
+      Icalendar::Values::CalAddress.new("mailto:#{attendee.email}", cn: attendee.full_name, role:)
     end
   end
 end

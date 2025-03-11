@@ -11,6 +11,7 @@ module Diary
   end
 
   mattr_accessor :calendar_sender
+  mattr_accessor :mailer_class
   @calendar_name = nil
 
   mattr_accessor :app_name

@@ -4,6 +4,7 @@ module Diary
 
     def initialize
       @email_invitee_classes = []
+      @mailer_class = 'CalendarInviteMailer'
     end
   end
 end

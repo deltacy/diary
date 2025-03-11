@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Appointment, type: :model do
   let(:jane) { create(:user, name: "Jane") }
   let(:appointment) { create(:appointment) }
-  let!(:calendar_entry) { Diary::CalendarEntry.create(owner: jane, schedulable: appointment, start_time: 1.hour.from_now, end_time: 2.hours.from_now) }
+  let!(:calendar_entry) { Diary::CalendarEntry.create(owner: jane, title: 'Meeting', schedulable: appointment, start_time: 1.hour.from_now, end_time: 2.hours.from_now) }
 
   describe 'calendar entry' do
 
@@ -14,7 +14,7 @@ RSpec.describe Appointment, type: :model do
     end
 
     it 'a calendar entry contains the organiser' do
-      expect(calendar_entry.ical).to include "ORGANIZER;CN=Frontida Calendar:mailto:no-reply@some-email.com"
+      expect(calendar_entry.ical).to include "ORGANIZER;CN=Jane via Frontida Calendar;ROLE=CHAIR:mailto:no-reply@"
     end
 
     it 'a calendar entry returns a start time' do
@@ -37,7 +37,7 @@ RSpec.describe Appointment, type: :model do
       expect(calendar_entry.ical.gsub("\r\n","\n")).to include "BEGIN:VALARM
 ACTION:DISPLAY
 TRIGGER:-PT1H
-SUMMARY: is in 1 hour
+SUMMARY:Meeting is in 1 hour
 END:VALARM"
     end
 

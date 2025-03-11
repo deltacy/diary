@@ -1,6 +1,6 @@
 module Diary
   class ApplicationMailer < ActionMailer::Base
-    default from: 'from@example.com'
+    default from: Diary.calendar_sender
     layout 'mailer'
   end
 end

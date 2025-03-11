@@ -16,7 +16,7 @@ module Diary
       invitee_class = invitee.class.name if invitee.present?
       return unless Diary.email_invitee_classes.include?(invitee_class)
 
-      CalendarInviteMailer.invite_email(self).deliver_now
+      Diary.mailer_class.constantize.invite_email(self).deliver_now
     end
   end
 end
