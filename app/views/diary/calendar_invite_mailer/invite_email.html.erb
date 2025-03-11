@@ -1,2 +1,15 @@
+<p><%= @recipient.first_name %>,</p>
 
-kjsklajsd
+<p>You have been added to an event:</p>
+
+<h3><%= @event.title %></h3>
+
+<p><strong>Owner:</strong> <%= @event.owner.full_name %></p>
+<p><strong>Date:</strong> <%= @event.start_time.strftime('%A, %B %d, %Y') %></p>
+<p><strong>Time:</strong> <%= @event.start_time.strftime('%I:%M %p') %> - <%= @event.end_time.strftime('%I:%M %p') %></p>
+
+<% if @event.description.present? %>
+  <p><strong>Description:</strong> <%= @event.description %></p>
+<% end %>
+
+<p>You can add this event to your calendar by downloading the attached file.</p>

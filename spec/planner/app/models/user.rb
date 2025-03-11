@@ -4,4 +4,8 @@ class User < ApplicationRecord
   def full_name
     name
   end
+
+  def first_name
+    name
+  end
 end

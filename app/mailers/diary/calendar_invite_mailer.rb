@@ -1,6 +1,7 @@
 module Diary
   class CalendarInviteMailer < ApplicationMailer
     def invite_email(calendar_invitee)
+      @event = calendar_invitee.calendar_invite.calendar_entry
       @calendar_invite = calendar_invitee.calendar_invite
       @recipient = calendar_invitee.invitee || calendar_invitee.email
 
