@@ -2,6 +2,7 @@ require 'icalendar'
 module Diary
   class CalendarEntry < ApplicationRecord
     has_many :calendar_invites, foreign_key: 'diary_calendar_entry_id', dependent: :destroy, inverse_of: :calendar_entry
+    has_many :calendar_invitees, through: :calendar_invites
 
     belongs_to :owner, polymorphic: true
     belongs_to :schedulable, polymorphic: true
@@ -10,6 +11,7 @@ module Diary
     validates :end_time, presence: true, date: { after_or_equal_to: :start_time }
 
     scope :on_date, ->(date) { where(start_time: date.all_day) }
+    scope :upcoming, -> { where(start_time: Time.zone.now.to_date...).order(start_time: :asc) }
 
     accepts_nested_attributes_for :calendar_invites
 
@@ -45,7 +47,7 @@ module Diary
         invitable_attendees.map(&:invitee).each { |attendee| e.append_attendee calendar_attendee(attendee) }
 
         e.ip_class = 'PRIVATE'
-        add_calendar_alert(e, "#{title.presence || 'Meeting'}", '-PT1H')
+        add_calendar_alert(e, (title.presence || 'Meeting').to_s, '-PT1H')
       end
 
       calendar.to_ical
