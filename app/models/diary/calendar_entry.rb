@@ -4,7 +4,7 @@ module Diary
     belongs_to :owner, polymorphic: true
     belongs_to :schedulable, polymorphic: true
 
-    validates :start_time, :owner_id,  presence: true
+    validates :start_time, :owner_id, presence: true
     validates :end_time, presence: true, date: { after_or_equal_to: :start_time }
 
     scope :on_date, ->(date) { where(start_time: date.all_day) }
@@ -25,7 +25,7 @@ module Diary
       self.schedulable = GlobalID::Locator.locate_signed(sgid)
     end
 
-    def ical(calendar: Icalendar::Calendar.new, calendar_name: Diary.app_name)
+    def add_to_ical(calendar:, calendar_name: Diary.app_name)
       calendar.x_wr_calname = calendar_name
       calendar.event do |e|
         e.uid         = "#{schedulable.class}##{schedulable.id}"
@@ -46,8 +46,6 @@ module Diary
           a.trigger = '-PT1H' # 1 hour
         end
       end
-
-      calendar.to_ical
     end
   end
 end
